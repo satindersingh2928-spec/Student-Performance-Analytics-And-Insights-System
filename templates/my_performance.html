@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="performance-page">
+
+    <h1>📊 My Performance</h1>
+
+    <p class="page-subtitle">
+        Track your academic progress and performance.
+    </p>
+
+    <!-- Performance Overview -->
+    <div class="performance-cards">
+
+        <div class="performance-card">
+            <h3>Percentage</h3>
+            <h2>{{ student.percentage }}%</h2>
+        </div>
+
+        <div class="performance-card">
+            <h3>Grade</h3>
+            <h2>{{ student.grade }}</h2>
+        </div>
+
+        <div class="performance-card">
+            <h3>Attendance</h3>
+            <h2>{{ student.attendance_percentage }}%</h2>
+        </div>
+
+        <div class="performance-card">
+            <h3>Status</h3>
+
+            {% if student.percentage >= 40 %}
+                <h2 class="pass">PASS ✅</h2>
+            {% else %}
+                <h2 class="fail">FAIL ❌</h2>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- Marks Breakdown -->
+    <h2 class="section-title">📚 Marks Breakdown</h2>
+
+    <div class="marks-grid">
+
+        <div class="marks-card">
+            <h4>Assignment</h4>
+            <h2>{{ student.assignment_marks }}/10</h2>
+            <div class="progress-bar">
+                <div class="progress-fill"
+                     style="width: {{ (student.assignment_marks/10)*100 }}%;"></div>
+            </div>
+        </div>
+
+        <div class="marks-card">
+            <h4>Internal</h4>
+            <h2>{{ student.internal_marks }}/15</h2>
+            <div class="progress-bar">
+                <div class="progress-fill"
+                     style="width: {{ (student.internal_marks/15)*100 }}%;"></div>
+            </div>
+        </div>
+
+        <div class="marks-card">
+            <h4>Practical</h4>
+            <h2>{{ student.practical_marks }}/15</h2>
+            <div class="progress-bar">
+                <div class="progress-fill"
+                     style="width: {{ (student.practical_marks/15)*100 }}%;"></div>
+            </div>
+        </div>
+
+        <div class="marks-card">
+            <h4>Final Exam</h4>
+            <h2>{{ student.final_exam_marks }}/60</h2>
+            <div class="progress-bar">
+                <div class="progress-fill"
+                     style="width: {{ (student.final_exam_marks/60)*100 }}%;"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Performance Summary -->
+    <h2 class="section-title">📈 Performance Summary</h2>
+
+    <div class="summary-card">
+
+        <table class="summary-table">
+            <tr><td>Total Marks</td><td><strong>{{ student.total_marks }}/100</strong></td></tr>
+            <tr><td>Percentage</td><td><strong>{{ student.percentage }}%</strong></td></tr>
+            <tr><td>Grade</td><td><strong>{{ student.grade }}</strong></td></tr>
+            <tr><td>Attendance</td><td><strong>{{ student.attendance_percentage }}%</strong></td></tr>
+            <tr><td>Course</td><td><strong>{{ student.course }}</strong></td></tr>
+            <tr><td>Specialization</td><td><strong>{{ student.specialization }}</strong></td></tr>
+        </table>
+
+    </div>
+
+    <!-- Performance Tips -->
+    <h2 class="section-title">💡 Performance Tips</h2>
+
+    <div class="tips-card">
+
+        {% if student.percentage >= 85 %}
+
+            <p>🏆 Excellent Performance! Keep maintaining your consistency.</p>
+
+        {% elif student.percentage >= 70 %}
+
+            <p>👍 Good Performance! A little more effort can help you score even higher.</p>
+
+            {% if student.final_exam_marks < 45 %}
+                <p>📘 Try to improve your final exam performance.</p>
+            {% endif %}
+
+        {% elif student.percentage >= 40 %}
+
+            <p>📖 You are passing, but there is room for improvement.</p>
+
+            {% if student.assignment_marks < 7 %}
+                <p>📝 Focus more on assignments.</p>
+            {% endif %}
+
+            {% if student.internal_marks < 10 %}
+                <p>📚 Improve your internal marks.</p>
+            {% endif %}
+
+            {% if student.practical_marks < 10 %}
+                <p>🧪 Practice more practical work.</p>
+            {% endif %}
+
+            {% if student.final_exam_marks < 35 %}
+                <p>📘 Focus on final exam preparation.</p>
+            {% endif %}
+
+        {% else %}
+
+            <p>⚠️ You are at academic risk.</p>
+
+            {% if student.attendance_percentage < 75 %}
+                <p>📅 Improve your attendance.</p>
+            {% endif %}
+
+            <p>📖 Work harder across all subjects.</p>
+
+        {% endif %}
+
+    </div>
+
+    <!-- Buttons -->
+    <div class="profile-actions" style="margin-top: 20px;">
+
+        <a href="/student_dashboard" class="btn-secondary">
+            ← Dashboard
+        </a>
+
+        <a href="/my_profile" class="btn-primary">
+            👤 My Profile
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

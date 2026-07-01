@@ -1,0 +1,395 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<div class="login-container">
+
+    <div class="login-left">
+
+        <h1>Student Performance Analytics</h1>
+
+        <p>
+
+            Create a secure admin account to manage
+            students, monitor performance and access
+            analytics dashboards.
+
+        </p>
+
+        <ul>
+
+            <li>👨‍💼 Multi Admin Support</li>
+
+            <li>🔐 Secret Key Protection</li>
+
+            <li>📊 Student Analytics</li>
+
+            <li>📈 Power BI Reports</li>
+
+            <li>🛡️ Secure Management</li>
+
+        </ul>
+
+    </div>
+
+    <div class="login-card">
+
+        <h2>Create Admin Account 🚀</h2>
+
+        <p>Register to continue</p>
+
+        <form method="POST" id="registerForm">
+
+        <label>Full Name </label>
+
+        <input
+        class="form-control"
+        type="text"
+        name="full_name"
+        placeholder="Enter your full name"
+        pattern="[A-Za-z ]+"
+        maxlength="50"
+        autocomplete="name"
+        required>
+
+        <label>Username</label>
+
+        <input
+        class="form-control"
+        type="text"
+        name="username"
+        placeholder="Choose a unique username"
+        pattern="[A-Za-z0-9_]+"
+        minlength="4"
+        maxlength="20"
+        autocomplete="username"
+        required>
+
+            <label>Password</label>
+
+            <div class="password-box">
+
+        <input
+        class="form-control"
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Create a strong password"
+        autocomplete="new-password"
+        required>
+
+                <i
+                class="fa-solid fa-eye"
+                id="togglePassword"
+                onclick="togglePassword('password',this)">
+                </i>
+
+    <div class="strength-container">
+        <div class="strength-label">
+            Password Strength :
+            <span id="strengthText">
+                Weak
+            </span>
+        </div>
+    </div>
+
+        <div class="strength-bar">
+            <div id="strengthFill"></div>
+        </div>
+        <div class="password-badges">
+            <span id="badge-length">8+ Characters</span>
+            <span id="badge-upper">Uppercase</span>
+            <span id="badge-number">Number</span>
+            <span id="badge-special">Special</span>
+        </div>
+
+    </div>
+
+            <label>Confirm Password</label>
+
+            <div class="password-box">
+
+        <input
+        class="form-control"
+        type="password"
+        id="confirm_password"
+        name="confirm_password"
+        placeholder="Re-enter your password"
+        autocomplete="new-password"
+        required>
+
+                <i
+                class="fa-solid fa-eye"
+                onclick="togglePassword('confirm_password',this)">
+                </i>
+
+            </div>
+            
+            <div class="match-message">
+                <small id="passwordMatch"></small>
+            </div>
+    <label>Admin Secret Key</label>
+    <div class="password-box">
+    <input
+    class="form-control"
+    type="password"
+    id="secret_key"
+    name="secret_key"
+    placeholder="Enter admin secret key"
+    autocomplete="off"
+    required>
+
+        <i
+
+        class="fa-solid fa-eye"
+
+        onclick="togglePassword('secret_key',this)">
+
+        </i>
+
+    </div>
+
+            <button
+
+            class="login-btn"
+
+            id="registerBtn"
+
+            type="submit">
+
+                Register
+                <i class="fa-solid fa-user-plus"></i>
+
+            </button>
+
+        </form>
+
+        <p style="margin-top:20px;text-align:center;">
+
+            Already have an account?
+
+            <a href="/login">
+
+                Login Here
+
+            </a>
+
+        </p>
+
+    </div>
+
+</div>
+
+<script>
+
+document.getElementById("registerForm").addEventListener("submit",function(){
+
+let btn=document.getElementById("registerBtn");
+
+btn.innerHTML='Creating Account <i class="fa-solid fa-spinner fa-spin"></i>';
+
+btn.disabled=true;
+
+});
+
+function togglePassword(id,icon){
+
+let input=document.getElementById(id);
+
+if(input.type==="password"){
+
+input.type="text";
+
+icon.classList.replace("fa-eye","fa-eye-slash");
+
+}
+
+else{
+
+input.type="password";
+
+icon.classList.replace("fa-eye-slash","fa-eye");
+
+}
+
+}
+
+const passwordInput=document.getElementById("password");
+
+passwordInput.addEventListener("input",function(){
+
+    let password=this.value;
+
+    let score=0;
+
+    if(password.length>=8){
+
+        score++;
+
+        document.getElementById("badge-length").classList.add("active");
+
+    }
+
+    else{
+
+        document.getElementById("badge-length").classList.remove("active");
+
+    }
+
+    if(/[A-Z]/.test(password)){
+
+        score++;
+
+        document.getElementById("badge-upper").classList.add("active");
+
+    }
+
+    else{
+
+        document.getElementById("badge-upper").classList.remove("active");
+
+    }
+
+    if(/[0-9]/.test(password)){
+
+        score++;
+
+        document.getElementById("badge-number").classList.add("active");
+
+    }
+
+    else{
+
+        document.getElementById("badge-number").classList.remove("active");
+
+    }
+
+    if(/[!@#$%^&*(),.?":{}|<>]/.test(password)){
+
+        score++;
+
+        document.getElementById("badge-special").classList.add("active");
+
+    }
+
+    else{
+
+        document.getElementById("badge-special").classList.remove("active");
+
+    }
+
+    let fill=document.getElementById("strengthFill");
+
+    let text=document.getElementById("strengthText");
+
+    if(score==0){
+
+        fill.style.width="0%";
+
+        fill.style.background="#dc3545";
+
+        text.innerHTML="Weak";
+
+        text.style.color="#dc3545";
+
+    }
+
+    else if(score==1){
+
+        fill.style.width="25%";
+
+        fill.style.background="#ef4444";
+
+        text.innerHTML="Weak";
+
+        text.style.color="#ef4444";
+
+    }
+
+    else if(score==2){
+
+        fill.style.width="50%";
+
+        fill.style.background="#f59e0b";
+
+        text.innerHTML="Medium";
+
+        text.style.color="#f59e0b";
+
+    }
+
+    else if(score==3){
+
+        fill.style.width="75%";
+
+        fill.style.background="#3b82f6";
+
+        text.innerHTML="Good";
+
+        text.style.color="#3b82f6";
+
+    }
+
+    else{
+
+        fill.style.width="100%";
+
+        fill.style.background="#22c55e";
+
+        text.innerHTML="Strong";
+
+        text.style.color="#22c55e";
+
+    }
+
+});
+
+const confirmPassword =
+document.getElementById("confirm_password");
+
+confirmPassword.addEventListener("input", checkPasswordMatch);
+
+passwordInput.addEventListener("input", checkPasswordMatch);
+
+function checkPasswordMatch(){
+
+    let password =
+    passwordInput.value;
+
+    let confirm =
+    confirmPassword.value;
+
+    let message =
+    document.getElementById("passwordMatch");
+
+    if(confirm===""){
+
+        message.innerHTML="";
+        return;
+
+    }
+
+    if(password===confirm){
+
+        message.innerHTML="✅ Passwords Match";
+
+        message.style.color="#22c55e";
+
+    }
+
+    else{
+
+        message.innerHTML="❌ Passwords Do Not Match";
+
+        message.style.color="#ef4444";
+
+    }
+
+}
+
+</script>
+
+{% endblock %}

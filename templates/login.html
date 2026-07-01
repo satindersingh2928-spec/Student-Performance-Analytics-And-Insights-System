@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="login-container">
+
+    <!-- LEFT SIDE -->
+    <div class="login-left">
+
+        <h1>Student Performance Analytics</h1>
+
+        <p>
+            Manage student records, analyze performance,
+            track attendance and view Power BI dashboards
+            — all in one place.
+        </p>
+
+        <ul>
+            <li>📊 Student Analytics Dashboard</li>
+            <li>📈 Power BI Reports</li>
+            <li>🎓 Student Management</li>
+            <li>📚 Attendance Tracking</li>
+            <li>🔒 Secure Login</li>
+        </ul>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="login-card">
+
+        <h2>Welcome Back 👋</h2>
+        <p>Login to continue</p>
+
+        <form method="POST" id="loginForm">
+
+            <label>Username</label>
+            <input
+                class="form-control"
+                type="text"
+                name="username"
+                placeholder="Enter Username"
+                required
+            >
+
+            <label>Password</label>
+
+            <div class="password-box">
+
+                <input
+                    class="form-control"
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter Password"
+                    required
+                >
+
+                <i
+                    class="fa-solid fa-eye"
+                    id="togglePassword">
+                </i>
+
+            </div>
+
+            <button
+                type="submit"
+                class="login-btn"
+                id="loginBtn">
+
+                Login
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+
+            </button>
+
+            <p class="register-text">
+                Don't have an Admin Account?
+                <a href="/register">Register Here</a>
+            </p>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- SCRIPT -->
+<script>
+
+    // Loading button
+    document.getElementById("loginForm").addEventListener("submit", function () {
+
+        let btn = document.getElementById("loginBtn");
+
+        btn.innerHTML = 'Signing In <i class="fa-solid fa-spinner fa-spin"></i>';
+        btn.disabled = true;
+
+    });
+
+    // Toggle password
+    document.getElementById("togglePassword").addEventListener("click", function () {
+
+        const password = document.getElementById("password");
+
+        if (password.type === "password") {
+            password.type = "text";
+            this.classList.replace("fa-eye", "fa-eye-slash");
+        } else {
+            password.type = "password";
+            this.classList.replace("fa-eye-slash", "fa-eye");
+        }
+
+    });
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>📊 Dashboard Overview</h2>
+
+<div class="dashboard-cards">
+
+    <div class="card">
+        <h3>📚 Total Students</h3>
+        <p>{{ total_students }}</p>
+    </div>
+
+    <div class="card">
+        <h3>📈 Average Percentage</h3>
+        <p>{{ avg_percentage }}%</p>
+    </div>
+
+    <div class="card">
+        <h3>📅 Average Attendance</h3>
+        <p>{{ avg_attendance }}%</p>
+    </div>
+
+    <div class="card">
+        <h3>✅ Passed Students</h3>
+        <p>{{ pass_count }}</p>
+    </div>
+
+    <div class="card">
+        <h3>❌ Failed Students</h3>
+        <p>{{ fail_count }}</p>
+    </div>
+
+    <!-- 🔥 FIXED -->
+    <div class="card">
+        <h3>🏆 Highest Attendance</h3>
+        {% if highest_attendance_student %}
+            <p>{{ highest_attendance_student[0] }}</p>
+            <small>{{ highest_attendance_student[1] }}%</small>
+        {% else %}
+            <p>No data</p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h3>⚠ Lowest Attendance</h3>
+        {% if lowest_attendance_student %}
+            <p>{{ lowest_attendance_student[0] }}</p>
+            <small>{{ lowest_attendance_student[1] }}%</small>
+        {% else %}
+            <p>No data</p>
+        {% endif %}
+    </div>
+
+</div>
+
+<div class="performance-section">
+
+    <div>
+        <h2>🏆 Top Performers</h2>
+        <ul>
+            {% for student in top_performers %}
+                <li>
+                    <span>{{ student[0] }}</span>
+                    <strong>{{ student[1] }}%</strong>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <h2>⚠ Bottom Performers</h2>
+        <ul>
+            {% for student in bottom_students %}
+                <li>
+                    <span>{{ student[0] }}</span>
+                    <strong>{{ student[1] }}%</strong>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+
+<div class="quick-actions">
+
+    <h2>⚡ Quick Actions</h2>
+
+    <div class="action-buttons">
+
+        <a href="/add_student" class="action-btn">
+            ➕ Add Student
+        </a>
+
+        <a href="/students" class="action-btn">
+            👨‍🎓 Manage Students
+        </a>
+
+        <a href="/powerbi" class="action-btn">
+            📊 Analytics Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>📝 Update Marks</h1>
+    <p>Update student's academic performance.</p>
+</div>
+
+<div class="marks-layout">
+
+    <!-- Left Side -->
+
+    <div class="form-card">
+
+        <form method="POST">
+
+            <div class="form-group">
+                <label>Attendance (%)</label>
+
+                <input
+                type="number"
+                step="0.01"
+                min="0"
+                max="100"
+                name="attendance_percentage"
+                value="{{ student.attendance_percentage }}"
+                required>
+
+            </div>
+
+            <div class="form-group">
+                <label>Assignment Marks (10)</label>
+
+                <input
+                type="number"
+                step="0.01"
+                min="0"
+                max="10"
+                name="assignment_marks"
+                value="{{ student.assignment_marks }}"
+                required>
+
+            </div>
+
+            <div class="form-group">
+                <label>Internal Marks (15)</label>
+
+                <input
+                type="number"
+                step="0.01"
+                min="0"
+                max="15"
+                name="internal_marks"
+                value="{{ student.internal_marks }}"
+                required>
+
+            </div>
+
+            <div class="form-group">
+                <label>Practical Marks (15)</label>
+
+                <input
+                type="number"
+                step="0.01"
+                min="0"
+                max="15"
+                name="practical_marks"
+                value="{{ student.practical_marks }}"
+                required>
+
+            </div>
+
+            <div class="form-group">
+                <label>Final Exam Marks (60)</label>
+
+                <input
+                type="number"
+                step="0.01"
+                min="0"
+                max="60"
+                name="final_exam_marks"
+                value="{{ student.final_exam_marks }}"
+                required>
+
+            </div>
+
+            <div class="button-group">
+
+                <button
+                type="submit"
+                class="btn-save">
+
+                💾 Save Marks
+
+                </button>
+
+                <a
+                href="/students"
+                class="btn-cancel">
+
+                Cancel
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- Right Side -->
+
+    <div class="marks-side">
+
+        <div class="info-card">
+
+            <h3>🎓 Grade Chart</h3>
+
+            <table class="grade-table">
+
+                <tr>
+                    <th>Percentage</th>
+                    <th>Grade</th>
+                </tr>
+
+                <tr><td>90 - 100</td><td>O</td></tr>
+                <tr><td>80 - 89.99</td><td>A+</td></tr>
+                <tr><td>70 - 79.99</td><td>A</td></tr>
+                <tr><td>60 - 69.99</td><td>B+</td></tr>
+                <tr><td>50 - 59.99</td><td>B</td></tr>
+                <tr><td>40 - 49.99</td><td>C</td></tr>
+                <tr><td>Below 40</td><td>F</td></tr>
+
+            </table>
+
+        </div>
+
+        <div class="info-card">
+
+            <h3>📘 Marks Structure</h3>
+
+            <ul>
+                <li>Assignment : <b>10</b></li>
+                <li>Internal : <b>15</b></li>
+                <li>Practical : <b>15</b></li>
+                <li>Final Exam : <b>60</b></li>
+                <li><b>Total : 100</b></li>
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

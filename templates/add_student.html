@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>➕ Add Student</h1>
+    <p>Create a new student profile.</p>
+</div>
+
+<div class="form-card">
+
+<form method="POST">
+
+<div class="form-group">
+<label>Registration Number</label>
+
+<div class="readonly-box">
+{{ new_registration_no }}
+</div>
+
+<input
+type="hidden"
+name="registration_no"
+value="{{ new_registration_no }}">
+</div>
+
+
+<div class="form-group">
+<label>Student Name</label>
+
+<input
+type="text"
+name="student_name"
+pattern="[A-Za-z ]+"
+required>
+</div>
+
+
+<div class="form-group">
+<label>Gender</label>
+
+<select name="gender" required>
+
+<option value="">Select Gender</option>
+
+<option value="Male">Male</option>
+
+<option value="Female">Female</option>
+
+</select>
+</div>
+
+
+<div class="form-group">
+<label>Age</label>
+
+<input
+type="number"
+name="age"
+min="16"
+max="40"
+required>
+</div>
+
+
+<div class="form-group">
+<label>City</label>
+
+<input
+type="text"
+name="city"
+pattern="[A-Za-z ]+"
+required>
+</div>
+
+
+<div class="form-group">
+<label>Course</label>
+
+<select
+name="course"
+id="course"
+required>
+
+<option value="">Select Course</option>
+
+<option value="BCA">BCA</option>
+<option value="MCA">MCA</option>
+<option value="BTech">BTech</option>
+<option value="MBA">MBA</option>
+<option value="BBA">BBA</option>
+<option value="BSc">BSc</option>
+<option value="MSc">MSc</option>
+<option value="BA">BA</option>
+
+</select>
+</div>
+
+
+<div class="form-group">
+<label>Specialization</label>
+
+<select
+id="specialization"
+name="specialization"
+required>
+
+<option value="">
+Select Specialization
+</option>
+
+</select>
+</div>
+
+
+<div class="form-group">
+<label>Year</label>
+
+<select
+name="year"
+required>
+
+<option value="">Select Year</option>
+
+<option value="1">1st Year</option>
+<option value="2">2nd Year</option>
+<option value="3">3rd Year</option>
+<option value="4">4th Year</option>
+
+</select>
+</div>
+
+
+<div class="form-group">
+<label>Semester</label>
+
+<select
+name="semester"
+required>
+
+<option value="">Select Semester</option>
+
+<option value="1">Sem 1</option>
+<option value="2">Sem 2</option>
+<option value="3">Sem 3</option>
+<option value="4">Sem 4</option>
+<option value="5">Sem 5</option>
+<option value="6">Sem 6</option>
+<option value="7">Sem 7</option>
+<option value="8">Sem 8</option>
+
+</select>
+</div>
+
+
+<div class="button-group">
+
+<button
+type="submit"
+class="btn-save">
+
+💾 Save Student
+
+</button>
+
+<a
+href="/students"
+class="btn-cancel">
+
+Cancel
+
+</a>
+
+</div>
+
+</form>
+
+</div>
+
+
+<script>
+
+const specializations = {
+
+"BCA":[
+"Computer Science",
+"Data Science",
+"AI & ML"
+],
+
+"MCA":[
+"Software Development",
+"Cloud Computing",
+"Data Science"
+],
+
+"BTech":[
+"AI & DS",
+"Cyber Security",
+"Cloud Computing",
+"IT"
+],
+
+"MBA":[
+"Finance",
+"Marketing",
+"HR",
+"Business Analytics"
+],
+
+"BBA":[
+"General",
+"Finance",
+"Marketing"
+],
+
+"BSc":[
+"Computer Science",
+"Mathematics",
+"Physics"
+],
+
+"MSc":[
+"Data Science",
+"Mathematics",
+"Physics"
+],
+
+"BA":[
+"English",
+"Economics",
+"History"
+]
+
+};
+
+document.getElementById("course").addEventListener("change",function(){
+
+let course=this.value;
+
+let specializationDropdown=document.getElementById("specialization");
+
+specializationDropdown.innerHTML='<option value="">Select Specialization</option>';
+
+if(course in specializations){
+
+specializations[course].forEach(function(spec){
+
+let option=document.createElement("option");
+
+option.value=spec;
+
+option.text=spec;
+
+specializationDropdown.appendChild(option);
+
+});
+
+}
+
+});
+
+</script>
+
+{% endblock %}

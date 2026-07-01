@@ -1,0 +1,737 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% set search = request.args.get('search', '') %}
+{% set course = request.args.get('course', '') %}
+
+<div class="page-header">
+
+    <div>
+
+        <h2>👨‍🎓 Students Management</h2>
+
+        <p>
+            Manage, search and update student records.
+        </p>
+
+    </div>
+
+    <div class="header-actions">
+
+    <a href="/add_student"
+    class="primary-btn">
+        ➕ Add Student
+    </a>
+
+    <a href="/import_students" class="btn-import">
+    <i class="fa-solid fa-file-excel"></i>
+    Import Excel
+    </a>
+
+    <a href="/export_excel" class="excel-btn">
+    📗 Export Excel
+    </a>
+
+    <a href="/export_pdf" class="btn-pdf">
+        📄 Export PDF
+    </a>
+
+    <button
+    type="button"
+    id="bulkDeleteBtn"
+    class="btn-delete-mode">
+    🗑 Bulk Delete
+    </button>
+    </div>
+
+</div>
+
+<div class="students-toolbar">
+
+<form method="GET" action="/students">
+
+<input
+type="text"
+name="search"
+placeholder="🔍 Search Student..."
+value="{{ search }}"
+class="search-box">
+
+<select
+name="course"
+class="filter-select">
+
+    <option value=""
+    {% if course == "" %}selected{% endif %}>
+        All Courses
+    </option>
+
+    <option value="BCA"
+    {% if course=="BCA" %}selected{% endif %}>BCA</option>
+
+    <option value="MCA"
+    {% if course=="MCA" %}selected{% endif %}>MCA</option>
+
+    <option value="BTech"
+    {% if course=="BTech" %}selected{% endif %}>BTech</option>
+
+    <option value="MBA"
+    {% if course=="MBA" %}selected{% endif %}>MBA</option>
+
+    <option value="BBA"
+    {% if course=="BBA" %}selected{% endif %}>BBA</option>
+
+    <option value="BSc"
+    {% if course=="BSc" %}selected{% endif %}>BSc</option>
+
+    <option value="MSc"
+    {% if course=="MSc" %}selected{% endif %}>MSc</option>
+
+    <option value="BA"
+    {% if course=="BA" %}selected{% endif %}>BA</option>
+
+</select>
+
+<button class="primary-btn">
+Search
+</button>
+
+<a href="/students" class="secondary-btn">
+Reset
+</a>
+
+</form>
+
+</div>
+
+<div
+id="deleteToolbar"
+class="delete-toolbar"
+style="display:none;">
+
+<label class="select-all-box">
+
+<input
+type="checkbox"
+id="selectCurrentPage">
+
+Select Current Page
+
+</label>
+
+<span id="selectedCount">0 Selected</span>
+
+<button
+type="button"
+id="deleteSelectedBtn"
+class="btn-delete">
+
+🗑 Delete Selected
+
+</button>
+<button
+type="button"
+id="cancelDeleteBtn"
+class="secondary-btn">
+❌ Cancel
+</button>
+</div>
+<br><br>
+<div class="table-container">
+<table class="students-table">
+
+    <tr>
+<th
+class="delete-column"
+style="display:none;">
+</th>
+<th>ID</th>
+        <th>Registration No</th>
+        <th>Name</th>
+        <th>Course</th>
+        <th>Specialization</th>
+        <th>Percentage</th>
+        <th>Grade</th>
+        <th>Action</th>
+    </tr>
+
+    {% for student in students %}
+
+<tr>
+
+<td
+class="delete-column"
+style="display:none;">
+
+<input
+
+type="checkbox"
+
+class="studentCheckbox"
+
+value="{{ student.student_id }}">
+
+</td>
+
+<td>{{ student.student_id }}</td>
+        <td>{{ student.registration_no }}</td>
+        <td>
+    <a href="/student/{{ student.student_id }}">
+        {{ student.student_name }}
+    </a>
+</td>
+        <td>{{ student.course }}</td>
+        <td>{{ student.specialization }}</td>
+        <td>{{ student.percentage }}</td>
+        <td>
+
+<span class="grade-badge grade-{{ student.grade|replace('+','plus') }}">
+
+{{ student.grade }}
+
+</span>
+
+</td>
+
+<td class="action-buttons"
+id="action{{ student.student_id }}">
+
+    <a href="{{ url_for('edit_student', student_id=student.student_id, page=page, search=search, course=course) }}"
+    class="btn-edit">
+
+    ✏ Edit
+
+    </a>
+
+    <a href="{{ url_for('update_marks', student_id=student.student_id, page=page, search=search, course=course) }}"
+    class="btn-marks">
+
+    📝 Marks
+
+    </a>
+
+    <a href="#"
+    class="btn-delete"
+
+    onclick="confirmDelete({{ student.student_id }})">
+
+    Delete
+
+    </a>
+
+<form action="{{ url_for('reset_password', student_id=student.student_id) }}"
+      method="POST"
+      style="display:inline;"
+      onsubmit="return confirm('Are you sure you want to reset password?');">
+
+<a href="#"
+class="btn-reset"
+onclick="confirmReset({{ student.student_id }})">
+🔑 Reset
+</a>
+
+</form>
+
+    </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+</div>
+
+<script>
+
+function confirmDelete(studentId){
+
+Swal.fire({
+
+title: "Delete Student?",
+
+text: "This action cannot be undone!",
+
+icon: "warning",
+
+showCancelButton: true,
+
+confirmButtonColor: "#dc3545",
+
+cancelButtonColor: "#6c757d",
+
+confirmButtonText: "Yes, Delete",
+
+cancelButtonText: "Cancel"
+
+}).then((result)=>{
+
+if(result.isConfirmed){
+
+window.location.href="/delete_student/"+studentId+
+"?page={{ page }}&search={{ search }}&course={{ course }}";
+
+}
+
+});
+
+}
+
+</script>
+
+<script>
+// ---------------------------
+// Selected Students Storage
+// ---------------------------
+
+let selectedStudents = JSON.parse(
+
+localStorage.getItem("selectedStudents")
+
+) || [];
+
+const bulkDeleteBtn =
+document.getElementById("bulkDeleteBtn");
+
+const cancelDeleteBtn =
+document.getElementById("cancelDeleteBtn");
+
+const deleteToolbar =
+document.getElementById("deleteToolbar");
+
+const deleteColumns =
+document.querySelectorAll(".delete-column");
+
+const actionButtons =
+document.querySelectorAll(".action-buttons");
+
+const checkboxes =
+document.querySelectorAll(".studentCheckbox");
+
+const selectedCount =
+document.getElementById("selectedCount");
+
+const selectCurrentPage =
+document.getElementById("selectCurrentPage");
+
+// ---------------------------
+// Restore Selected Students
+// ---------------------------
+
+function restoreSelections(){
+
+    checkboxes.forEach(cb=>{
+
+        let studentId=parseInt(cb.value);
+
+        if(selectedStudents.includes(studentId)){
+
+            cb.checked=true;
+
+        }
+
+    });
+
+        let allChecked=true;
+
+    checkboxes.forEach(cb=>{
+
+        if(!cb.checked){
+
+            allChecked=false;
+
+        }
+
+    });
+
+    selectCurrentPage.checked=allChecked;
+
+    updateSelectedCount();
+
+}
+
+
+bulkDeleteBtn.addEventListener("click", function(){
+
+    localStorage.setItem("deleteMode","true");
+
+    deleteToolbar.style.display="flex";
+
+    deleteColumns.forEach(col=>{
+
+        col.style.display="table-cell";
+
+    });
+
+    actionButtons.forEach(action=>{
+
+        action.style.display="none";
+
+    });
+
+    bulkDeleteBtn.style.display="none";
+
+});
+
+
+cancelDeleteBtn.addEventListener("click", function(){
+
+    localStorage.removeItem("deleteMode");
+
+    deleteToolbar.style.display="none";
+
+    deleteColumns.forEach(col=>{
+
+        col.style.display="none";
+
+    });
+
+    actionButtons.forEach(action=>{
+
+        action.style.display="table-cell";
+
+    });
+
+    bulkDeleteBtn.style.display="inline-block";
+
+    checkboxes.forEach(cb=>{
+
+        cb.checked=false;
+
+    });
+
+    updateSelectedCount();
+
+});
+
+
+checkboxes.forEach(cb=>{
+
+    cb.addEventListener("change",function(){
+
+        let studentId=parseInt(this.value);
+
+        if(this.checked){
+
+            if(!selectedStudents.includes(studentId)){
+
+                selectedStudents.push(studentId);
+
+            }
+
+        }
+
+        else{
+
+            selectedStudents=selectedStudents.filter(
+
+                id=>id!==studentId
+
+            );
+
+        }
+
+        localStorage.setItem(
+
+            "selectedStudents",
+
+            JSON.stringify(selectedStudents)
+
+        );
+
+        updateSelectedCount();
+
+    });
+
+});
+
+
+function updateSelectedCount(){
+
+    selectedCount.innerHTML=
+
+    selectedStudents.length+" Selected";
+
+    let allChecked=true;
+
+    checkboxes.forEach(cb=>{
+
+        if(!cb.checked){
+
+            allChecked=false;
+
+        }
+
+    });
+
+    selectCurrentPage.checked=allChecked;
+
+}
+restoreSelections();
+restoreDeleteMode();
+
+function restoreDeleteMode(){
+
+    if(localStorage.getItem("deleteMode")==="true"){
+
+        deleteToolbar.style.display="flex";
+
+        deleteColumns.forEach(col=>{
+
+            col.style.display="table-cell";
+
+        });
+
+        actionButtons.forEach(action=>{
+
+            action.style.display="none";
+
+        });
+
+        bulkDeleteBtn.style.display="none";
+
+    }
+
+}
+
+document.getElementById("deleteSelectedBtn").addEventListener("click",function(){
+
+    if(selectedStudents.length===0){
+
+        Swal.fire({
+
+            icon:"warning",
+
+            title:"No Students Selected",
+
+            text:"Please select at least one student."
+
+        });
+
+        return;
+
+    }
+
+    Swal.fire({
+
+        title:"Delete Selected Students?",
+
+        text:`${selectedStudents.length} students will be deleted permanently.`,
+
+        icon:"warning",
+
+        showCancelButton:true,
+
+        confirmButtonColor:"#dc3545",
+
+        cancelButtonColor:"#6c757d",
+
+        confirmButtonText:"Yes, Delete",
+
+        cancelButtonText:"Cancel"
+
+    }).then((result)=>{
+
+        if(result.isConfirmed){
+
+            fetch("/delete_selected_students",{
+
+                method:"POST",
+
+                headers:{
+
+                    "Content-Type":"application/json"
+
+                },
+
+                body:JSON.stringify({
+
+                    student_ids:selectedStudents
+
+                })
+
+            })
+
+            .then(response=>response.json())
+
+            .then(data=>{
+
+                if(data.success){
+
+                    localStorage.removeItem("selectedStudents");
+
+                    localStorage.removeItem("deleteMode");
+
+                    Swal.fire({
+
+                        icon:"success",
+
+                        title:"Deleted Successfully",
+
+                        text:`${data.deleted} students deleted.`,
+
+                        timer:1500,
+
+                        showConfirmButton:false
+
+                    }).then(()=>{
+
+                        location.reload();
+
+                    });
+
+                }
+
+                else{
+
+                    Swal.fire({
+
+                        icon:"error",
+
+                        title:"Error",
+
+                        text:data.message
+
+                    });
+
+                }
+
+            });
+
+        }
+
+    });
+
+});
+
+selectCurrentPage.addEventListener("change",function(){
+
+    checkboxes.forEach(cb=>{
+
+        let studentId=parseInt(cb.value);
+
+        if(this.checked){
+
+            cb.checked=true;
+
+            if(!selectedStudents.includes(studentId)){
+
+                selectedStudents.push(studentId);
+
+            }
+
+        }
+
+        else{
+
+            cb.checked=false;
+
+            selectedStudents=selectedStudents.filter(
+
+                id=>id!==studentId
+
+            );
+
+        }
+
+    });
+
+    localStorage.setItem(
+
+        "selectedStudents",
+
+        JSON.stringify(selectedStudents)
+
+    );
+
+    updateSelectedCount();
+
+});
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+function confirmReset(studentId) {
+    Swal.fire({
+        title: "Reset Password?",
+        text: "Password will be set to student123",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#28a745",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Yes, Reset",
+        cancelButtonText: "Cancel"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // create form dynamically (POST request)
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/reset_password/" + studentId +
+            "?page={{ page }}&search={{ search }}&course={{ course }}";
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+</script>
+
+<div class="pagination">
+
+    {% if page > 1 %}
+
+    <a href="/students?page={{ page-1 }}&search={{ search }}&course={{ course }}">
+
+        ◀ Previous
+
+    </a>
+
+    {% endif %}
+
+{% for p in range(1, total_pages + 1) %}
+
+    {% if p == 1
+          or p == total_pages
+          or (p >= page-2 and p <= page+2) %}
+
+        {% if p == page %}
+
+            <span class="active-page">
+
+                {{ p }}
+
+            </span>
+
+        {% else %}
+
+            <a href="/students?page={{ p }}&search={{ search }}&course={{ course }}">
+
+                {{ p }}
+
+            </a>
+
+        {% endif %}
+
+    {% elif p == page-3 or p == page+3 %}
+
+        <span class="dots">...</span>
+
+    {% endif %}
+
+{% endfor %}
+
+{% if page < total_pages %}
+
+<a href="/students?page={{ page+1 }}&search={{ search }}&course={{ course }}">
+
+Next ▶
+
+</a>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

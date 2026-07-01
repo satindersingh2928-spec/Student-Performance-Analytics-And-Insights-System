@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="login-card" style="max-width:600px;margin:auto;">
+
+    <h2>📥 Import Students</h2>
+
+    <p>
+        Upload an Excel (.xlsx) file to import multiple student records.
+    </p>
+
+{% if report %}
+
+<div class="import-stats">
+
+    <div class="stat-box">
+
+        <h2>{{ report.imported }}</h2>
+
+        <p>Imported</p>
+
+    </div>
+
+    <div class="stat-box">
+
+        <h2>{{ report.duplicates }}</h2>
+
+        <p>Duplicates</p>
+
+    </div>
+
+    <div class="stat-box">
+
+        <h2>{{ report.invalid }}</h2>
+
+        <p>Invalid Rows</p>
+
+    </div>
+
+</div>
+
+{% if report.errors %}
+
+<hr>
+
+<h4>Invalid Row Details</h4>
+
+<ul class="list-group mb-4">
+
+{% for error in report.errors %}
+
+<li class="list-group-item list-group-item-warning">
+
+{{ error }}
+
+</li>
+
+{% endfor %}
+
+</ul>
+
+{% endif %}
+
+<form method="POST" action="/clear_import_report">
+    <button class="btn btn-danger">Close Report</button>
+</form>
+
+{% endif %}
+
+<form method="POST" action="{{ url_for('upload_students') }}" enctype="multipart/form-data">
+
+        <label>Select Excel File</label>
+
+        <input
+        type="file"
+        name="excel_file"
+        accept=".xlsx"
+        required>
+
+        <br><br>
+
+        <button class="login-btn">
+
+            Upload Excel
+
+        </button>
+
+        <br><br>
+
+<a href="/download_template" class="btn-template">
+
+    <i class="fa-solid fa-download"></i>
+
+    Download Excel Template
+
+</a>
+
+    </form>
+
+</div>
+
+{% endblock %}

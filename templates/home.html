@@ -1,0 +1,351 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+
+<section class="hero-section">
+
+    <div class="hero-left">
+
+        <span class="hero-tag">🎓 Student Performance Analytics</span>
+
+        <h1>Analyze. Track. Improve.</h1>
+
+        <p>
+            A complete Student Performance Analytics & Insights System
+            to manage students, monitor performance,
+            generate reports and visualize analytics using Power BI.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="/login" class="primary-btn">Get Started</a>
+
+            <a href="#features" class="secondary-btn">
+                Explore Features
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="hero-right">
+
+        <div class="hero-card">
+
+            <div class="hero-icon">📊</div>
+
+            <h3>Student Analytics</h3>
+
+            <p>
+                Manage student records,
+                analyze marks and attendance,
+                and generate insights.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FEATURES -->
+
+<section id="features" class="features-section">
+
+    <h2>Powerful Features</h2>
+
+    <p class="feature-subtitle">
+        Everything you need to manage student performance.
+    </p>
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+            <div class="feature-icon">👨‍🎓</div>
+            <h3>Student Management</h3>
+            <p>Add, edit, search and manage students easily.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">📥</div>
+            <h3>Excel Import</h3>
+            <p>Bulk import students using Excel templates.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">📤</div>
+            <h3>Export Reports</h3>
+            <p>Download data in Excel & PDF formats.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Performance Analytics</h3>
+            <p>Analyze marks, grades & attendance.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">📈</div>
+            <h3>Power BI Dashboard</h3>
+            <p>Advanced visualization dashboards.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">🔐</div>
+            <h3>Secure Authentication</h3>
+            <p>Admin & Student login with security.</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- STATS -->
+
+<section class="stats-section">
+
+    <div class="stat-card">
+        <h2>500+</h2>
+        <p>Students Managed</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>8+</h2>
+        <p>Major Features</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>6</h2>
+        <p>Power BI Dashboards</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>100%</h2>
+        <p>Responsive</p>
+    </div>
+
+</section>
+
+
+<!-- SHOWCASE -->
+
+<section class="showcase-section">
+
+    <h2>🚀 Project Showcase</h2>
+
+    <p class="showcase-subtitle">
+        Explore key modules of the system.
+    </p>
+
+</section>
+
+
+<!-- DASHBOARD -->
+
+<section class="project-showcase">
+
+    <div class="showcase-image">
+        <img src="{{ url_for('static', filename='images/dashboard-preview.png') }}">
+    </div>
+
+    <div class="showcase-content">
+        <h2>📊 Dashboard</h2>
+        <p>
+            Overview of student data including performance,
+            attendance and insights.
+        </p>
+    </div>
+
+</section>
+
+
+<!-- STUDENTS -->
+
+<section class="project-showcase reverse">
+
+    <div class="showcase-image">
+        <img src="{{ url_for('static', filename='images/students-preview.png') }}">
+    </div>
+
+    <div class="showcase-content">
+        <h2>👨‍🎓 Student Management</h2>
+        <p>
+            Manage records, search students,
+            update marks and more.
+        </p>
+    </div>
+
+</section>
+
+
+<!-- ANALYTICS -->
+
+<section class="project-showcase">
+
+    <div class="showcase-image">
+        <img src="{{ url_for('static', filename='images/analytics-preview.png') }}">
+    </div>
+
+    <div class="showcase-content">
+        <h2>📈 Analytics Dashboard</h2>
+        <p>
+            Power BI dashboards for deep insights
+            and reporting.
+        </p>
+    </div>
+
+</section>
+
+
+<!-- ABOUT -->
+
+<section class="about-section">
+
+    <!-- LEFT SIDE -->
+    <div class="about-left">
+
+        <h2>About The Project</h2>
+
+        <!-- 🔥 Subtitle -->
+        <p class="about-subtitle">
+            A complete solution for managing, analyzing and visualizing student performance.
+        </p>
+
+        <p>
+            The <strong>Student Performance Analytics & Insights System</strong> is a web-based application 
+            designed to efficiently manage student data and analyze academic performance. 
+            It provides a centralized platform where administrators can store, update, and monitor 
+            student records in a structured and organized manner.
+        </p>
+
+        <p>
+            The system follows a <strong>role-based authentication mechanism</strong>. 
+            An Admin can register using a secure <strong>Secret Admin Key</strong>, and once registered, 
+            can log in to access the full system. On the other hand, Students do not register manually — 
+            they can log in using their <strong>Registration Number as username</strong> and a 
+            <strong>default password</strong> provided to them.
+        </p>
+
+        <p>
+            For security and flexibility, students also have the option to 
+            <strong>change their password</strong> after logging in. This ensures both ease of access 
+            and improved account security.
+        </p>
+
+        <p>
+            The system enables real-time tracking of marks, attendance, and overall performance, 
+            while automatically calculating total marks, percentage, and grades. It also supports 
+            <strong>Excel and PDF export</strong> for reporting, and integrates with 
+            <strong>Power BI dashboards</strong> to visualize insights and trends effectively.
+        </p>
+
+        <p>
+            Overall, this project simplifies student management, reduces manual effort, 
+            ensures data accuracy, and provides meaningful insights for better academic decisions.
+        </p>
+
+    </div>
+
+
+    <!-- RIGHT SIDE -->
+    <div class="about-right">
+
+        <div class="about-feature">✅ Manage student records (Add / Edit / Delete / Search)</div>
+
+        <div class="about-feature">✅ Track marks, attendance & performance</div>
+
+        <div class="about-feature">✅ Automatic total, percentage & grade calculation</div>
+
+        <div class="about-feature">✅ Excel & PDF report generation</div>
+
+        <div class="about-feature">✅ Admin registration using Secret Key</div>
+
+        <div class="about-feature">✅ Student login using Registration Number</div>
+
+        <div class="about-feature">✅ Password change functionality for students</div>
+
+        <div class="about-feature">✅ Power BI dashboards for advanced analytics</div>
+
+        <div class="about-feature">✅ Clean, responsive and user-friendly UI</div>
+
+    </div>
+
+</section>
+
+
+<!-- TECH STACK -->
+
+<section class="tech-section">
+
+    <h2>Technology Stack</h2>
+
+    <div class="tech-grid">
+
+        <div class="tech-card">🐍<h3>Python</h3></div>
+        <div class="tech-card">🌐<h3>Flask</h3></div>
+        <div class="tech-card">🗄️<h3>MySQL</h3></div>
+        <div class="tech-card">📊<h3>Power BI</h3></div>
+        <div class="tech-card">🎨<h3>HTML</h3></div>
+        <div class="tech-card">🎨<h3>CSS</h3></div>
+        <div class="tech-card">⚡<h3>JavaScript</h3></div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
+{% block footer %}
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <!-- LEFT -->
+        <div class="footer-section">
+            <h2>🎓 Student Analytics System</h2>
+            <p>Manage. Analyze. Improve Student Performance.</p>
+        </div>
+
+        <!-- LINKS -->
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <a href="/">Home</a>
+            <a href="/login">Login</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/students">Students</a>
+        </div>
+
+        <!-- SOCIAL -->
+        <div class="footer-section">
+            <h3>Connect</h3>
+
+            <a href="https://www.linkedin.com/in/satinder-singh-8a59b8212/" target="_blank">
+                <i class="fa-brands fa-linkedin"></i> LinkedIn
+            </a>
+
+            <a href="https://www.instagram.com/satinder_6586/" target="_blank">
+                <i class="fa-brands fa-instagram"></i> Instagram
+            </a>
+
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ds.satindersingh@gmail.com" target="_blank">
+                <i class="fa-solid fa-envelope"></i> Message Me
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 Student Performance Analytics System</p>
+        <p>Developed by <strong>Satinder Singh</strong></p>
+    </div>
+
+</footer>
+
+{% endblock %}

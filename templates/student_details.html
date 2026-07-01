@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="page-title">
+
+👤 Student Profile
+
+</h2>
+
+<div class="profile-card">
+
+    <div class="profile-header">
+
+        <div class="profile-avatar">
+
+            {{ student.student_name[0] }}
+
+        </div>
+
+        <div>
+
+            <h2>{{ student.student_name }}</h2>
+
+            <p>
+
+                {{ student.course }}
+
+                •
+
+                {{ student.specialization }}
+
+            </p>
+
+            <p>
+
+                Registration No :
+
+                {{ student.registration_no }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="summary-cards">
+
+    <div class="summary-card">
+
+        <h2>{{ student.percentage }}%</h2>
+
+        <p>Percentage</p>
+
+    </div>
+
+    <div class="summary-card">
+
+        <h2>{{ student.grade }}</h2>
+
+        <p>Grade</p>
+
+    </div>
+
+    <div class="summary-card">
+
+        <h2>{{ student.attendance_percentage }}%</h2>
+
+        <p>Attendance</p>
+
+    </div>
+
+    <div class="summary-card">
+
+        {% if student.percentage >= 40 %}
+
+            <h2 style="color:#16a34a;">PASS</h2>
+
+        {% else %}
+
+            <h2 style="color:#ef4444;">FAIL</h2>
+
+        {% endif %}
+
+        <p>Status</p>
+
+    </div>
+
+</div>
+
+<div class="performance-status">
+
+    <h3>Performance Analysis</h3>
+
+    <span
+        class="performance-badge"
+        style="background: {{ performance_color }};">
+
+        {{ performance_status }}
+
+    </span>
+
+</div>
+
+<div class="attendance-analysis">
+
+    <h3>Attendance Analysis</h3>
+
+    <div class="progress-item">
+
+        <div class="progress-label">
+
+            <span>Attendance</span>
+
+            <span>{{ student.attendance_percentage }}%</span>
+
+        </div>
+
+        <div class="progress-bar">
+
+            <div class="progress-fill"
+                 style="width: {{ student.attendance_percentage }}%;">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <span
+        class="performance-badge"
+        style="background: {{ attendance_color }};">
+
+        {{ attendance_status }}
+
+    </span>
+
+</div>
+
+<div class="details-grid">
+
+    <!-- Personal Information -->
+
+    <div class="info-card">
+
+        <h3>📋 Personal Information</h3>
+
+        <div class="info-row">
+            <span>Gender</span>
+            <strong>{{ student.gender }}</strong>
+        </div>
+
+        <div class="info-row">
+            <span>Age</span>
+            <strong>{{ student.age }}</strong>
+        </div>
+
+        <div class="info-row">
+            <span>City</span>
+            <strong>{{ student.city }}</strong>
+        </div>
+
+        <div class="info-row">
+            <span>Course</span>
+            <strong>{{ student.course }}</strong>
+        </div>
+
+        <div class="info-row">
+            <span>Specialization</span>
+            <strong>{{ student.specialization }}</strong>
+        </div>
+
+        <div class="info-row">
+            <span>Year</span>
+            <strong>{{ student.year }}</strong>
+        </div>
+
+        <div class="info-row">
+            <span>Semester</span>
+            <strong>{{ student.semester }}</strong>
+        </div>
+
+    </div>
+
+    <!-- Academic Information -->
+
+    <div class="info-card">
+
+        <h3>🎓 Academic Information</h3>
+
+        <div class="info-row">
+            <span>Assignment</span>
+            <strong>{{ student.assignment_marks }}/10</strong>
+        </div>
+
+        <div class="info-row">
+            <span>Internal</span>
+            <strong>{{ student.internal_marks }}/15</strong>
+        </div>
+
+        <div class="info-row">
+            <span>Practical</span>
+            <strong>{{ student.practical_marks }}/15</strong>
+        </div>
+
+        <div class="info-row">
+            <span>Final Exam</span>
+            <strong>{{ student.final_exam_marks }}/60</strong>
+        </div>
+
+        <div class="info-row">
+            <span>Total Marks</span>
+            <strong>{{ student.total_marks }}/100</strong>
+        </div>
+
+    </div>
+
+</div>
+
+<h3>📈 Marks Performance</h3>
+
+<div class="progress-item">
+
+    <div class="progress-label">
+        <span>Assignment</span>
+        <span>{{ student.assignment_marks }}/10</span>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill"
+             style="width:{{ student.assignment_marks * 10 }}%">
+        </div>
+    </div>
+
+</div>
+
+<div class="progress-item">
+
+    <div class="progress-label">
+        <span>Internal</span>
+        <span>{{ student.internal_marks }}/15</span>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill"
+             style="width:{{ (student.internal_marks/15)*100 }}%">
+        </div>
+    </div>
+
+</div>
+
+<div class="progress-item">
+
+    <div class="progress-label">
+        <span>Practical</span>
+        <span>{{ student.practical_marks }}/15</span>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill"
+             style="width:{{ (student.practical_marks/15)*100 }}%">
+        </div>
+    </div>
+
+</div>
+
+<div class="progress-item">
+
+    <div class="progress-label">
+        <span>Final Exam</span>
+        <span>{{ student.final_exam_marks }}/60</span>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill"
+             style="width:{{ (student.final_exam_marks/60)*100 }}%">
+        </div>
+    </div>
+
+</div>
+
+<h3>⚡ Quick Actions</h3>
+
+<div class="action-buttons">
+
+    <a href="/edit_student/{{ student.student_id }}"
+       class="action-btn edit-btn">
+
+        ✏ Edit Student
+
+    </a>
+
+    <a href="/update_marks/{{ student.student_id }}"
+       class="action-btn marks-btn">
+
+        📝 Update Marks
+
+    </a>
+
+    <a href="/students"
+       class="action-btn back-btn">
+
+        ⬅ Back to Students
+
+    </a>
+
+</div>
+
+{% endblock %}

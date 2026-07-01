@@ -1,0 +1,294 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>✏ Edit Student</h1>
+    <p>Update student information.</p>
+</div>
+
+<div class="form-card">
+
+<form method="POST">
+
+<div class="form-group">
+
+<label>Registration Number</label>
+
+<div class="readonly-box">
+{{ student.registration_no }}
+</div>
+
+<input
+type="hidden"
+name="registration_no"
+value="{{ student.registration_no }}">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Student Name</label>
+
+<input
+type="text"
+name="student_name"
+value="{{ student.student_name }}"
+pattern="[A-Za-z ]+"
+required>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Gender</label>
+
+<select
+name="gender"
+required>
+
+<option value="Male"
+{% if student.gender=="Male" %}selected{% endif %}>
+Male
+</option>
+
+<option value="Female"
+{% if student.gender=="Female" %}selected{% endif %}>
+Female
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Age</label>
+
+<input
+type="number"
+name="age"
+min="16"
+max="40"
+value="{{ student.age }}"
+required>
+
+</div>
+
+
+<div class="form-group">
+
+<label>City</label>
+
+<input
+type="text"
+name="city"
+value="{{ student.city }}"
+pattern="[A-Za-z ]+"
+required>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Course</label>
+
+<select
+id="course"
+name="course"
+required>
+
+<option value="BCA" {% if student.course=="BCA" %}selected{% endif %}>BCA</option>
+<option value="MCA" {% if student.course=="MCA" %}selected{% endif %}>MCA</option>
+<option value="BTech" {% if student.course=="BTech" %}selected{% endif %}>BTech</option>
+<option value="MBA" {% if student.course=="MBA" %}selected{% endif %}>MBA</option>
+<option value="BBA" {% if student.course=="BBA" %}selected{% endif %}>BBA</option>
+<option value="BSc" {% if student.course=="BSc" %}selected{% endif %}>BSc</option>
+<option value="MSc" {% if student.course=="MSc" %}selected{% endif %}>MSc</option>
+<option value="BA" {% if student.course=="BA" %}selected{% endif %}>BA</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Specialization</label>
+
+<select
+id="specialization"
+name="specialization"
+required>
+
+<option value="{{ student.specialization }}" selected>
+{{ student.specialization }}
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Year</label>
+
+<select
+name="year"
+required>
+
+<option value="1" {% if student.year==1 %}selected{% endif %}>1st Year</option>
+<option value="2" {% if student.year==2 %}selected{% endif %}>2nd Year</option>
+<option value="3" {% if student.year==3 %}selected{% endif %}>3rd Year</option>
+<option value="4" {% if student.year==4 %}selected{% endif %}>4th Year</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Semester</label>
+
+<select
+name="semester"
+required>
+
+<option value="1" {% if student.semester==1 %}selected{% endif %}>Semester 1</option>
+<option value="2" {% if student.semester==2 %}selected{% endif %}>Semester 2</option>
+<option value="3" {% if student.semester==3 %}selected{% endif %}>Semester 3</option>
+<option value="4" {% if student.semester==4 %}selected{% endif %}>Semester 4</option>
+<option value="5" {% if student.semester==5 %}selected{% endif %}>Semester 5</option>
+<option value="6" {% if student.semester==6 %}selected{% endif %}>Semester 6</option>
+<option value="7" {% if student.semester==7 %}selected{% endif %}>Semester 7</option>
+<option value="8" {% if student.semester==8 %}selected{% endif %}>Semester 8</option>
+
+</select>
+
+</div>
+
+
+<div class="button-group">
+
+<button
+type="submit"
+class="btn-save">
+
+💾 Update Student
+
+</button>
+
+<a
+href="/students"
+class="btn-cancel">
+
+Cancel
+
+</a>
+
+</div>
+
+</form>
+
+</div>
+
+
+<script>
+
+const specializations = {
+
+"BCA":[
+"Computer Science",
+"Data Science",
+"AI & ML"
+],
+
+"MCA":[
+"Software Development",
+"Cloud Computing",
+"Data Science"
+],
+
+"BTech":[
+"AI & DS",
+"Cyber Security",
+"Cloud Computing",
+"IT"
+],
+
+"MBA":[
+"Finance",
+"Marketing",
+"HR",
+"Business Analytics"
+],
+
+"BBA":[
+"General",
+"Finance",
+"Marketing"
+],
+
+"BSc":[
+"Computer Science",
+"Mathematics",
+"Physics"
+],
+
+"MSc":[
+"Data Science",
+"Mathematics",
+"Physics"
+],
+
+"BA":[
+"English",
+"Economics",
+"History"
+]
+
+};
+
+function loadSpecializations(course, selectedValue=""){
+
+let dropdown=document.getElementById("specialization");
+
+dropdown.innerHTML="";
+
+specializations[course].forEach(function(spec){
+
+let option=document.createElement("option");
+
+option.value=spec;
+option.text=spec;
+
+if(spec===selectedValue){
+option.selected=true;
+}
+
+dropdown.appendChild(option);
+
+});
+
+}
+
+loadSpecializations(
+document.getElementById("course").value,
+"{{ student.specialization }}"
+);
+
+document.getElementById("course").addEventListener("change",function(){
+
+loadSpecializations(this.value);
+
+});
+
+</script>
+
+{% endblock %}

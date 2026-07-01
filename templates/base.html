@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Performance Analytics & Insights System</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header>
+
+    <h1 class="site-title">
+        Student Performance Analytics & Insights System
+    </h1>
+
+    <nav>
+
+        {% if session.get("role") == "admin" %}
+
+            <a href="/dashboard">Dashboard</a>
+            <a href="/students">Students</a>
+            <a href="/analytics">Analytics</a>
+            <a href="/add_student">Add Student</a>
+            <a href="/logout">Logout</a>
+
+        {% elif session.get("role") == "student" %}
+
+            <a href="/student_dashboard">My Dashboard</a>
+            <a href="/my_profile">My Profile</a>
+            <a href="/my_performance">My Performance</a>
+            <a href="/change_password">Change Password</a>
+            <a href="/logout">Logout</a>
+
+        {% else %}
+
+            <a href="/">Home</a>
+            <a href="/login">Login</a>
+
+        {% endif %}
+
+    </nav>
+
+</header>
+
+<!-- ================= MAIN ================= -->
+<main class="container">
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+
+            <div class="flash-container">
+
+                {% for category, message in messages %}
+
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+{% block footer %}
+{% endblock %}
+
+<!-- ================= SCRIPT ================= -->
+<script>
+
+    // Auto hide flash messages
+    setTimeout(function () {
+
+        let flash = document.querySelector(".flash-container");
+
+        if (flash) {
+
+            flash.style.opacity = "0";
+            flash.style.transition = "0.5s";
+
+            setTimeout(function () {
+                flash.remove();
+            }, 500);
+        }
+
+    }, 3000);
+
+</script>
+
+</body>
+</html>

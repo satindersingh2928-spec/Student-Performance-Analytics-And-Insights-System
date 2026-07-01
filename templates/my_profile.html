@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="page-title">
+
+👤 My Profile
+
+</h2>
+
+<div class="profile-card">
+
+    <div class="profile-header">
+
+        <div class="profile-avatar">
+
+            {{ student.student_name[0] }}
+
+        </div>
+
+        <div>
+
+            <h2>{{ student.student_name }}</h2>
+
+            <p>
+
+                {{ student.course }}
+
+                • {{ student.specialization }}
+
+            </p>
+
+            <p>
+
+                Registration No :
+                {{ student.registration_no }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<h3>📋 Personal Information</h3>
+
+<div class="details-grid">
+
+<div class="info-card">
+
+<div class="info-row">
+
+<span>Full Name</span>
+
+<strong>{{ student.student_name }}</strong>
+
+</div>
+
+<div class="info-row">
+
+<span>Gender</span>
+
+<strong>{{ student.gender }}</strong>
+
+</div>
+
+<div class="info-row">
+
+<span>Age</span>
+
+<strong>{{ student.age }}</strong>
+
+</div>
+
+<div class="info-row">
+
+<span>City</span>
+
+<strong>{{ student.city }}</strong>
+
+</div>
+
+</div>
+
+<div class="info-card">
+
+<h3>Academic Information</h3>
+
+<div class="info-row">
+
+<span>Course</span>
+
+<strong>{{ student.course }}</strong>
+
+</div>
+
+<div class="info-row">
+
+<span>Specialization</span>
+
+<strong>{{ student.specialization }}</strong>
+
+</div>
+
+<div class="info-row">
+
+<span>Year</span>
+
+<strong>{{ student.year }}</strong>
+
+</div>
+
+<div class="info-row">
+
+<span>Semester</span>
+
+<strong>{{ student.semester }}</strong>
+
+</div>
+
+</div>
+
+</div>
+
+<h3>⚡ Quick Actions</h3>
+
+<div class="action-buttons">
+
+<a href="/my_performance"
+class="action-btn marks-btn">
+
+📈 My Performance
+
+</a>
+
+<a href="/change_password"
+class="action-btn back-btn">
+
+🔒 Change Password
+
+</a>
+
+</div>
+
+{% endblock %}
