@@ -1880,5 +1880,39 @@ def analytics():
 
     return render_template("analytics.html")
 
+@app.route("/api/students")
+def api_students():
+
+    conn = get_connection()
+    if not conn:
+        return {"error": "DB connection failed"}
+
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT 
+            student_id,
+            student_name,
+            course,
+            year,
+            semester,
+            attendance_percentage,
+            assignment_marks,
+            internal_marks,
+            practical_marks,
+            final_exam_marks,
+            total_marks,
+            percentage,
+            grade
+        FROM students
+    """)
+
+    data = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return {"data": data}
+
 if __name__ == "__main__":
     app.run(debug=True)
