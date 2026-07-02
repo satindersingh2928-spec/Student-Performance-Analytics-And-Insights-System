@@ -3,20 +3,25 @@ from config import DB_CONFIG
 import time
 
 def get_connection():
-    start = time.time()
+    try:
+        start = time.time()
 
-    conn = mysql.connector.connect(
-        host=DB_CONFIG["host"],
-        user=DB_CONFIG["user"],
-        password=DB_CONFIG["password"],
-        database=DB_CONFIG["database"],
-        port=DB_CONFIG["port"],
-        ssl_ca=DB_CONFIG["ssl_ca"]
-    )
+        conn = mysql.connector.connect(
+            host=DB_CONFIG.get("host"),
+            user=DB_CONFIG.get("user"),
+            password=DB_CONFIG.get("password"),
+            database=DB_CONFIG.get("database"),
+            port=DB_CONFIG.get("port"),
+            ssl_ca=DB_CONFIG.get("ssl_ca") or None
+        )
 
-    print(f"Connection Time : {time.time()-start:.2f} sec")
+        print(f"[DB] Connected in {time.time() - start:.2f} sec")
 
-    return conn
+        return conn
+
+    except mysql.connector.Error as err:
+        print(f"[DB ERROR] {err}")
+        return None
     
 def log_activity(username, action, description):
 

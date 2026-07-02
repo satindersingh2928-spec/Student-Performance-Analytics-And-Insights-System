@@ -1,61 +1,86 @@
 # ==============================
-# 🔹 Standard Library Imports
+# 🔹 Load Env
+# ==============================
+from dotenv import load_dotenv
+load_dotenv()
+
+# ==============================
+# 🔹 Standard
 # ==============================
 import os
 import re
-from io import BytesIO
-from datetime import datetime
+import uuid
 import secrets
+from datetime import datetime
 
 # ==============================
-# 🔹 Third-Party Imports
+# 🔹 Flask
 # ==============================
-from dotenv import load_dotenv
+from flask import (
+    Flask, render_template, request,
+    redirect, session, flash, send_file, url_for
+)
 
-from flask import Flask, render_template, request, redirect, session, flash,send_file, url_for
-
+# ==============================
+# 🔹 Security
+# ==============================
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
-import uuid
 
-# ReportLab (PDF)
+# ==============================
+# 🔹 DB
+# ==============================
+import mysql.connector
+from config import DB_CONFIG
+
+# ==============================
+# 🔹 PDF
+# ==============================
 from reportlab.platypus import (
-    SimpleDocTemplate, Table, TableStyle, Paragraph
+    SimpleDocTemplate, Table, TableStyle,
+    Paragraph, Spacer
 )
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
-from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 
-# OpenPyXL (Excel)
-from openpyxl import Workbook, load_workbook
-from openpyxl.styles import Font, Alignment, PatternFill
-from openpyxl.worksheet.datavalidation import DataValidation
+# ==============================
+# 🔹 Excel
+# ==============================
+from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
 
 # ==============================
-# 🔹 Local Imports
+# 🔹 Local
 # ==============================
 from models.db import *
 
 # ==============================
-# 🔹 Environment Variables
+# 🔹 Flask App Setup
 # ==============================
-load_dotenv()
-ADMIN_SECRET_KEY = os.getenv("ADMIN_SECRET_KEY")
-
 app = Flask(__name__)
 
+# Upload folder
 UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-app.secret_key = os.getenv("SECRET_KEY")
+# Secret key
+app.secret_key = os.getenv("SECRET_KEY", "fallback-secret-key")
 
-from config import DB_CONFIG
+# Env variables
+ADMIN_SECRET_KEY = os.getenv("ADMIN_SECRET_KEY", "")
 
+# ==============================
+# 🔹 Database Connection
+# ==============================
 def get_connection():
-    return mysql.connector.connect(**DB_CONFIG)
+    try:
+        return mysql.connector.connect(**DB_CONFIG)
+    except Exception as e:
+        print("DB Connection Error:", e)
+        return None
 
 @app.route("/")
 def home():
@@ -66,14 +91,13 @@ def register():
 
     if request.method == "POST":
 
-        # 🔹 Get form data
         full_name = request.form.get("full_name", "").strip()
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "")
         confirm_password = request.form.get("confirm_password", "")
-        secret_key = request.form.get("secret_key", "")
+        secret_key = request.form.get("secret_key", "").strip()
 
-        # 🔐 Basic validation
+        # 🔐 Validation
         if not all([full_name, username, password, confirm_password, secret_key]):
             flash("All fields are required.", "danger")
             return redirect("/register")
@@ -86,7 +110,8 @@ def register():
             flash("Password must be at least 6 characters.", "danger")
             return redirect("/register")
 
-        if secret_key != ADMIN_SECRET_KEY:
+        # 🔐 SECRET KEY FIX
+        if secret_key.strip() != ADMIN_SECRET_KEY.strip():
             flash("Invalid Admin Secret Key.", "danger")
             return redirect("/register")
 
@@ -94,11 +119,12 @@ def register():
             conn = get_connection()
             cursor = conn.cursor(dictionary=True)
 
-            # 🔍 Check existing user
+            # 🔍 FIXED QUERY
             cursor.execute(
-                "SELECT id FROM users WHERE username=%s",
+                "SELECT * FROM users WHERE username=%s",
                 (username,)
             )
+
             if cursor.fetchone():
                 flash("Username already exists.", "danger")
                 return redirect("/register")
@@ -106,7 +132,7 @@ def register():
             # 🔐 Hash password
             hashed_password = generate_password_hash(password)
 
-            # 📝 Insert user
+            # 📝 Insert admin
             cursor.execute("""
                 INSERT INTO users (
                     full_name,
@@ -120,7 +146,7 @@ def register():
 
             conn.commit()
 
-            # 🧾 Log activity
+            # 🧾 Log
             log_activity(
                 username,
                 "Register Admin",

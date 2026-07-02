@@ -1,6 +1,13 @@
+# Environment
 .env
-*.pyc
+
+# Python
 __pycache__/
+*.pyc
+
+# Files
 *.pdf
-uploads/
 *.xlsx
+
+# Uploads
+uploads/
